@@ -346,6 +346,7 @@ export default function App() {
   const [sort, setSort] = useState("id_desc");
   const [loading, setLoading] = useState(true);
   const [cartExchangeItems, setCartExchangeItems] = useState([newItem()]);
+  const [qty, setQty] = useState(1); // ← 추가
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
