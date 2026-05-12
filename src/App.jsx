@@ -277,7 +277,9 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [modal, setModal] = useState(null);
   const [authMode, setAuthMode] = useState("login");
-  const [activeCategories, setActiveCategories] = useState(["전체"]);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedPopular, setSelectedPopular] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", username: "" });
   const [orders, setOrders] = useState([]);
   const [adminOrders, setAdminOrders] = useState([]);
@@ -322,18 +324,14 @@ export default function App() {
 
   function showToast(msg) { setToast(msg); setTimeout(() => setToast(null), 2500); }
 
-  function toggleCategory(cat) {
-    if (cat === "전체") { setActiveCategories(["전체"]); return; }
-    setActiveCategories(prev => {
-      const w = prev.filter(c => c !== "전체");
-      if (w.includes(cat)) { const n = w.filter(c => c !== cat); return n.length === 0 ? ["전체"] : n; }
-      if (w.length >= 3) return prev;
-      return [...w, cat];
-    });
-  }
+  const YEARS = ["2026", "2025", "2024", "2023", "2022", "2021"];
+  const TAGS = ["잡", "한정"];
 
-  const filtered = (activeCategories.includes("전체") ? products : products.filter(p => p.categories?.some(c => activeCategories.includes(c))))
+  const filtered = products
     .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+    .filter(p => !selectedYear || p.categories?.includes(selectedYear))
+    .filter(p => !selectedTag || p.categories?.includes(selectedTag))
+    .filter(p => !selectedPopular || p.categories?.includes("인기"))
     .sort((a, b) => {
       if (sort === "id_desc") return b.id - a.id;
       if (sort === "id_asc") return a.id - b.id;
@@ -547,16 +545,25 @@ export default function App() {
             <input className="search-input" placeholder="상품 이름 검색..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
           <div className="filter-bar">
-            {CATEGORIES.map(cat => (
-              <button key={cat} className={`filter-chip ${activeCategories.includes(cat) ? "active" : ""}`} onClick={() => toggleCategory(cat)}>{cat}</button>
-            ))}
-            {!activeCategories.includes("전체") && <span className="filter-hint">{activeCategories.length}/3 선택됨</span>}
-            <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
-              <option value="id_desc">ID 내림차순</option>
-              <option value="id_asc">ID 올림차순</option>
-              <option value="stock_asc">재고 적은순</option>
-              <option value="stock_desc">재고 많은순</option>
-            </select>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", width: "100%" }}>
+              <span style={{ fontSize: 11, color: "var(--muted)", letterSpacing: 1, textTransform: "uppercase", marginRight: 4 }}>연도</span>
+              {YEARS.map(y => (
+                <button key={y} className={`filter-chip ${selectedYear === y ? "active" : ""}`} onClick={() => setSelectedYear(selectedYear === y ? null : y)}>{y}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", width: "100%" }}>
+              <span style={{ fontSize: 11, color: "var(--muted)", letterSpacing: 1, textTransform: "uppercase", marginRight: 4 }}>태그</span>
+              {TAGS.map(t => (
+                <button key={t} className={`filter-chip ${selectedTag === t ? "active" : ""}`} onClick={() => setSelectedTag(selectedTag === t ? null : t)}>{t}</button>
+              ))}
+              <button className={`filter-chip ${selectedPopular ? "active" : ""}`} onClick={() => setSelectedPopular(p => !p)}>인기</button>
+              <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
+                <option value="id_desc">ID 내림차순</option>
+                <option value="id_asc">ID 올림차순</option>
+                <option value="stock_asc">재고 적은순</option>
+                <option value="stock_desc">재고 많은순</option>
+              </select>
+            </div>
           </div>
           <div className="grid">
             {loading
