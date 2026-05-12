@@ -360,6 +360,7 @@ export default function App() {
   const [usernameEdit, setUsernameEdit] = useState("");
   const [showUsernameEdit, setShowUsernameEdit] = useState(false);
   const [chatSending, setChatSending] = useState(false);
+  const messagesEndRef = useRef(null); // ← 추가
 
   useEffect(() => {
     fetchProducts().then(setProducts).catch(() => showToast("상품을 불러오지 못했습니다")).finally(() => setLoading(false));
