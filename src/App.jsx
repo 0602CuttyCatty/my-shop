@@ -344,6 +344,7 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("id_desc");
   const [loading, setLoading] = useState(true);
+  const [cartExchangeItems, setCartExchangeItems] = useState([newItem()]);
   const [qty, setQty] = useState(1);
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
