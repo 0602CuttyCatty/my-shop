@@ -196,6 +196,55 @@ const style = `
 
   .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--text); color: white; padding: 12px 24px; border-radius: 100px; font-size: 13px; z-index: 999; animation: toastIn 0.2s ease; white-space: nowrap; }
   @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+  @media (max-width: 640px) {
+    .nav { padding: 0 16px; height: 54px; }
+    .nav-logo { font-size: 16px; }
+    .nav-btn { padding: 6px 10px; font-size: 12px; }
+    .nav-user { gap: 6px; }
+    .nav-user span { display: none; }
+
+    .hero { padding: 32px 16px 24px; }
+    .hero img { max-width: 200px !important; }
+
+    .search-bar { padding: 0 16px 16px; }
+    .filter-bar { padding: 0 16px 16px; gap: 6px; }
+    .filter-chip { padding: 5px 12px; font-size: 11px; }
+
+    .grid { margin: 0 0 40px; grid-template-columns: repeat(2, 1fr); }
+    .card-body { padding: 12px; }
+    .card-name { font-size: 13px; }
+
+    .overlay { padding: 12px; align-items: flex-end; }
+    .modal { max-width: 100%; border-radius: 12px 12px 0 0; }
+    .detail-modal { max-height: 92vh; border-radius: 12px 12px 0 0; }
+    .chat-modal { height: 92vh; border-radius: 12px 12px 0 0; }
+
+    .mypage { padding: 28px 16px; }
+    .mypage h2 { font-size: 24px; }
+    .cart-page { padding: 28px 16px; }
+    .cart-page h2 { font-size: 24px; }
+    .admin { padding: 28px 16px; }
+    .admin h2 { font-size: 24px; }
+
+    .qty-controls { flex-wrap: wrap; }
+    .qty-unit-btn { padding: 8px 10px; font-size: 11px; }
+
+    .cart-item { gap: 10px; }
+    .cart-item-img { width: 44px; height: 44px; }
+    .cart-item-name { font-size: 13px; }
+
+    .admin-toolbar { gap: 6px; }
+    .admin-search { min-width: 120px; width: 100%; }
+
+    .product-manage-item { flex-wrap: wrap; gap: 10px; }
+    .product-manage-stock-row { width: 100%; }
+
+    .form-row { flex-direction: column; }
+
+    .offer-item-row { flex-wrap: nowrap; }
+    .offer-item-qty { width: 60px; }
+  }
 `;
 
 const CATEGORIES = ["전체", "2026", "2025", "2024", "2023", "2022", "2021", "잡", "한정", "인기"];
@@ -248,7 +297,6 @@ export default function App() {
   const [productCategoryFilter, setProductCategoryFilter] = useState("전체");
   const [usernameEdit, setUsernameEdit] = useState("");
   const [showUsernameEdit, setShowUsernameEdit] = useState(false);
-  const [cartExchangeItems, setCartExchangeItems] = useState([newItem()]);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
