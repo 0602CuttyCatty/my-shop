@@ -193,7 +193,8 @@ const style = `
   .chat-input { flex: 1; border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 12px; font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.15s; }
   .chat-input:focus { border-color: var(--text); }
   .chat-send-btn { background: var(--text); color: white; border: none; border-radius: var(--radius); padding: 9px 16px; font-size: 13px; font-family: inherit; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
-  .chat-send-btn:hover { opacity: 0.8; }
+  .chat-send-btn:hover:not(:disabled) { opacity: 0.8; }
+  .chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .chat-order-info { padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); background: var(--surface); }
   .chat-order-info strong { color: var(--text); }
 
@@ -345,7 +346,6 @@ export default function App() {
   const [sort, setSort] = useState("id_desc");
   const [loading, setLoading] = useState(true);
   const [cartExchangeItems, setCartExchangeItems] = useState([newItem()]);
-  const [qty, setQty] = useState(1);
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
@@ -359,7 +359,7 @@ export default function App() {
   const [productCategoryFilter, setProductCategoryFilter] = useState("전체");
   const [usernameEdit, setUsernameEdit] = useState("");
   const [showUsernameEdit, setShowUsernameEdit] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [chatSending, setChatSending] = useState(false);
 
   useEffect(() => {
     fetchProducts().then(setProducts).catch(() => showToast("상품을 불러오지 못했습니다")).finally(() => setLoading(false));
@@ -538,11 +538,13 @@ export default function App() {
 
   async function handleSendMessage(e) {
     e.preventDefault();
-    if (!chatInput.trim()) return;
+    if (!chatInput.trim() || chatSending) return;
+    setChatSending(true);
     try {
       const msg = await sendMessage(chatOrder.id, chatInput.trim());
       setMessages(prev => [...prev, msg]); setChatInput("");
     } catch (err) { showToast(err.message); }
+    finally { setChatSending(false); }
   }
 
   const pendingOrders = orders.filter(o => o.status === "pending");
@@ -927,7 +929,9 @@ export default function App() {
             </div>
             <form className="chat-input-row" onSubmit={handleSendMessage}>
               <input className="chat-input" placeholder="메시지 입력..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
-              <button type="submit" className="chat-send-btn">전송</button>
+              <button type="submit" className="chat-send-btn" disabled={chatSending}>
+                {chatSending ? "전송 중..." : "전송"}
+              </button>
             </form>
           </div>
         </div>
