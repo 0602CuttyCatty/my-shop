@@ -288,6 +288,7 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("id_desc");
+  const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
