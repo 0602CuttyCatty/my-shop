@@ -179,6 +179,9 @@ const style = `
   .form-row { display: flex; gap: 12px; }
   .form-row .field { flex: 1; }
 
+  .sort-select { border: 1px solid var(--border); border-radius: 100px; padding: 6px 14px; font-size: 12px; font-family: inherit; outline: none; background: var(--surface); cursor: pointer; color: var(--text); transition: border-color 0.15s; }
+  .sort-select:focus { border-color: var(--text); }
+
   /* 채팅 */
   .chat-modal { max-width: 480px; height: 580px; display: flex; flex-direction: column; }
   .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; background: var(--bg); }
@@ -282,7 +285,7 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [toast, setToast] = useState(null);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [sort, setSort] = useState("id_desc");
   const [qty, setQty] = useState(1);
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -330,7 +333,14 @@ export default function App() {
   }
 
   const filtered = (activeCategories.includes("전체") ? products : products.filter(p => p.categories?.some(c => activeCategories.includes(c))))
-    .filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+    .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      if (sort === "id_desc") return b.id - a.id;
+      if (sort === "id_asc") return a.id - b.id;
+      if (sort === "stock_asc") return a.stock - b.stock;
+      if (sort === "stock_desc") return b.stock - a.stock;
+      return 0;
+    });
 
   const filteredAdminOrders = adminOrders
     .filter(o => adminStatusFilter === "전체" || o.status === adminStatusFilter)
@@ -541,6 +551,12 @@ export default function App() {
               <button key={cat} className={`filter-chip ${activeCategories.includes(cat) ? "active" : ""}`} onClick={() => toggleCategory(cat)}>{cat}</button>
             ))}
             {!activeCategories.includes("전체") && <span className="filter-hint">{activeCategories.length}/3 선택됨</span>}
+            <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
+              <option value="id_desc">ID 내림차순</option>
+              <option value="id_asc">ID 올림차순</option>
+              <option value="stock_asc">재고 적은순</option>
+              <option value="stock_desc">재고 많은순</option>
+            </select>
           </div>
           <div className="grid">
             {loading
