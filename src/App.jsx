@@ -201,52 +201,107 @@ const style = `
   @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
   @media (max-width: 640px) {
+    /* 네비게이션 */
     .nav { padding: 0 16px; height: 54px; }
     .nav-logo { font-size: 16px; }
-    .nav-btn { padding: 6px 10px; font-size: 12px; }
-    .nav-user { gap: 6px; }
+    .nav-btn { padding: 6px 10px; font-size: 11px; }
+    .nav-user { gap: 4px; }
     .nav-user span { display: none; }
+    .cart-badge { font-size: 9px; padding: 1px 4px; }
 
-    .hero { padding: 32px 16px 24px; }
-    .hero img { max-width: 200px !important; }
-
-    .search-bar { padding: 0 16px 16px; }
+    /* 홈 */
+    .hero { padding: 28px 16px 20px; }
+    .hero img { max-width: 180px !important; }
+    .search-bar { padding: 0 16px 12px; }
     .filter-bar { padding: 0 16px 16px; gap: 6px; }
-    .filter-chip { padding: 5px 12px; font-size: 11px; }
-
+    .filter-chip { padding: 5px 11px; font-size: 11px; }
+    .sort-select { font-size: 11px; padding: 5px 10px; }
     .grid { margin: 0 0 40px; grid-template-columns: repeat(2, 1fr); }
-    .card-body { padding: 12px; }
+    .card-body { padding: 10px 12px; gap: 6px; }
     .card-name { font-size: 13px; }
+    .cat-tag { font-size: 9px; padding: 2px 6px; }
 
-    .overlay { padding: 12px; align-items: flex-end; }
-    .modal { max-width: 100%; border-radius: 12px 12px 0 0; }
-    .detail-modal { max-height: 92vh; border-radius: 12px 12px 0 0; }
-    .chat-modal { height: 92vh; border-radius: 12px 12px 0 0; }
+    /* 모달 공통 - 아래서 올라오는 형태 */
+    .overlay { padding: 0; align-items: flex-end; background: rgba(0,0,0,0.5); }
+    .modal { max-width: 100%; width: 100%; border-radius: 16px 16px 0 0; max-height: 92vh; overflow-y: auto; }
 
-    .mypage { padding: 28px 16px; }
-    .mypage h2 { font-size: 24px; }
-    .cart-page { padding: 28px 16px; }
-    .cart-page h2 { font-size: 24px; }
-    .admin { padding: 28px 16px; }
-    .admin h2 { font-size: 24px; }
+    /* 상품 상세 모달 */
+    .detail-modal { max-height: 92vh; border-radius: 16px 16px 0 0; }
+    .detail-img { aspect-ratio: 4/3; }
+    .detail-header { padding: 16px 20px 0; }
+    .detail-body { padding: 12px 20px 32px; gap: 12px; }
+    .detail-name { font-size: 20px; }
+    .detail-desc { font-size: 13px; }
+    .qty-controls { width: 100%; justify-content: center; }
+    .qty-unit-btn { padding: 10px 12px; font-size: 11px; flex: 1; text-align: center; }
+    .qty-display { font-size: 15px; flex: 1.5; }
+    .add-cart-btn { padding: 14px; font-size: 15px; }
 
-    .qty-controls { flex-wrap: wrap; }
-    .qty-unit-btn { padding: 8px 10px; font-size: 11px; }
+    /* 교환 아이템 */
+    .offer-section { padding: 12px 0; }
+    .offer-item-row { gap: 6px; }
+    .offer-item-name { font-size: 13px; padding: 8px 10px; }
+    .offer-item-qty { width: 56px; font-size: 13px; padding: 8px 8px; }
+    .offer-remove-btn { width: 32px; height: 32px; font-size: 14px; }
+    .offer-add-btn { padding: 10px; font-size: 12px; }
+    .offer-summary { padding: 12px 14px; }
 
-    .cart-item { gap: 10px; }
-    .cart-item-img { width: 44px; height: 44px; }
-    .cart-item-name { font-size: 13px; }
+    /* 로그인/회원가입 모달 */
+    .modal-header { padding: 20px 20px 16px; }
+    .modal-title { font-size: 18px; }
+    .modal-body { padding: 20px; gap: 14px; }
+    .field input { padding: 12px 14px; font-size: 15px; }
+    .submit-btn { padding: 14px; font-size: 15px; }
 
+    /* 장바구니 */
+    .cart-page { padding: 24px 16px 40px; }
+    .cart-page h2 { font-size: 24px; margin-bottom: 20px; }
+    .cart-item { padding: 14px 16px; gap: 12px; }
+    .cart-item-img { width: 52px; height: 52px; border-radius: 6px; }
+    .cart-item-name { font-size: 14px; }
+    .cart-item-cats { font-size: 10px; }
+    .cart-qty-btn { padding: 8px 14px; font-size: 15px; }
+    .cart-qty-num { padding: 8px 12px; font-size: 14px; }
+    .cart-offer-section { padding: 16px; }
+    .cart-summary { padding: 14px 16px; }
+    .cart-summary-row { font-size: 14px; }
+    .cart-order-btn { padding: 16px; font-size: 15px; }
+
+    /* 마이페이지 */
+    .mypage { padding: 24px 16px 40px; }
+    .mypage h2 { font-size: 24px; margin-bottom: 6px; }
+    .mypage-sub { font-size: 13px; margin-bottom: 24px; }
+    .section-title { font-size: 10px; }
+    .order-item { padding: 14px 16px; gap: 8px; }
+    .order-name { font-size: 14px; }
+    .order-meta { font-size: 11px; }
+    .order-exchange-tag { font-size: 10px; padding: 2px 8px; }
+
+    /* 채팅 모달 */
+    .chat-modal { height: 85vh; border-radius: 16px 16px 0 0; max-width: 100%; }
+    .chat-messages { padding: 16px; gap: 8px; }
+    .chat-bubble { font-size: 14px; padding: 10px 13px; max-width: 82%; }
+    .chat-input-row { padding: 12px 16px; gap: 8px; }
+    .chat-input { font-size: 15px; padding: 10px 12px; }
+    .chat-send-btn { padding: 10px 16px; font-size: 14px; }
+    .chat-order-info { padding: 10px 16px; font-size: 12px; }
+
+    /* 관리자 */
+    .admin { padding: 24px 16px 40px; }
+    .admin h2 { font-size: 24px; margin-bottom: 16px; }
     .admin-toolbar { gap: 6px; }
-    .admin-search { min-width: 120px; width: 100%; }
+    .admin-search { min-width: unset; width: 100%; }
+    .admin-order-item { padding: 14px 16px; flex-direction: column; }
+    .order-right { flex-direction: row; align-items: center; gap: 8px; width: 100%; justify-content: flex-end; }
+    .status-select { font-size: 12px; }
+    .qty-edit-row { margin-top: 8px; }
+    .product-manage-item { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+    .product-manage-stock-row { width: 100%; justify-content: flex-end; }
+    .add-product-form { padding: 16px; }
+    .form-row { flex-direction: column; gap: 10px; }
 
-    .product-manage-item { flex-wrap: wrap; gap: 10px; }
-    .product-manage-stock-row { width: 100%; }
-
-    .form-row { flex-direction: column; }
-
-    .offer-item-row { flex-wrap: nowrap; }
-    .offer-item-qty { width: 60px; }
+    /* 공통 */
+    .empty-state { padding: 36px 0; font-size: 13px; }
   }
 `;
 
@@ -288,7 +343,6 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("id_desc");
-  const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [chatOrder, setChatOrder] = useState(null);
   const [messages, setMessages] = useState([]);
